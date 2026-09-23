@@ -1,5 +1,7 @@
 # Stuff3D
 
+**Live demo:** https://stuff3d.vercel.app
+
 A software 3D wireframe renderer in about 300 lines of C++. It uses SFML only to open a window and draw 2D lines; the 3D part (rotation, camera, near-plane clipping, perspective divide) is written by hand.
 
 ![Stuff3D running: walking around and through the penguin model](docs/media/demo.gif)
