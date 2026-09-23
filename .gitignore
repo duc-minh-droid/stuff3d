@@ -1,1 +1,12 @@
-cmake-build-debug/
+# build output
+build/
+cmake-build-*/
+out/
+*.exe
+*.obj
+*.o
+
+# IDE
+.idea/
+.vs/
+.vscode/
