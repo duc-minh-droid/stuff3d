@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 440" width="1000" height="440" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <style>
+    .t { fill: #d6e5d8; font-size: 16px; font-weight: 700; }
+    .s { fill: #7d917f; font-size: 12.5px; }
+    .m { fill: #36f56a; font-size: 13px; font-family: Consolas, "Cascadia Mono", monospace; }
+    .am { fill: #ffb547; font-size: 13px; font-family: Consolas, monospace; }
+    .rm { fill: #ff6b6b; font-size: 12.5px; }
+    .axis { stroke: #3a4a3c; stroke-width: 1.5; }
+    .plane { stroke: #5fd4ff; stroke-width: 2; }
+    .ray { stroke: #36f56a; stroke-width: 1.5; stroke-dasharray: 5 4; }
+    .seg { stroke: #36f56a; stroke-width: 3; }
+  </style>
+  <defs>
+    <marker id="ax" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a4a3c"/></marker>
+    <marker id="rd" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ff6b6b"/></marker>
+  </defs>
+  <rect width="1000" height="440" rx="14" fill="#0b0f0c"/>
+
+  <!-- ============ left: perspective divide ============ -->
+  <rect x="20" y="20" width="470" height="400" rx="10" fill="#121813" stroke="#1f2a21"/>
+  <text x="40" y="50" class="t">1. Perspective divide</text>
+  <text x="40" y="70" class="s">Top-down view of view space. The camera is at the origin looking down +Z.</text>
+
+  <line class="axis" x1="70" y1="260" x2="470" y2="260" marker-end="url(#ax)"/>
+  <text x="452" y="280" class="s">+Z</text>
+  <line class="axis" x1="70" y1="370" x2="70" y2="96" marker-end="url(#ax)"/>
+  <text x="80" y="104" class="s">+X</text>
+
+  <!-- image plane z = 1 -->
+  <line class="plane" x1="170" y1="118" x2="170" y2="298"/>
+  <text x="178" y="126" fill="#5fd4ff" font-size="12.5">z = 1 (image plane)</text>
+
+  <!-- point P -->
+  <line class="ray" x1="70" y1="260" x2="400" y2="137"/>
+  <line x1="400" y1="137" x2="400" y2="260" stroke="#2c3a2e" stroke-dasharray="3 3"/>
+  <circle cx="400" cy="137" r="6" fill="#36f56a"/>
+  <text x="410" y="132" class="m">P = (x, z)</text>
+  <circle cx="170" cy="222.7" r="5" fill="#5fd4ff"/>
+  <text x="112" y="206" fill="#5fd4ff" font-size="13" font-family="Consolas, monospace">x / z</text>
+
+  <circle cx="70" cy="260" r="7" fill="#ffb547"/>
+  <text x="44" y="284" class="s">camera</text>
+
+  <text x="116" y="278" class="s">1</text>
+  <text x="300" y="276" class="s">z</text>
+  <text x="408" y="204" class="s">x</text>
+
+  <text x="40" y="320" class="m">similar triangles: x' / 1 = x / z</text>
+  <text x="40" y="344" class="s">Twice as far away = half the size on screen.</text>
+  <text x="40" y="362" class="s">|x / z| ≤ 1 fits in the window, so the field of view</text>
+  <text x="40" y="380" class="s">is 90°. The same division is applied to y.</text>
+  <text x="40" y="404" class="m">project(p) = { p.x / p.z, p.y / p.z }</text>
+
+  <!-- ============ right: near clip ============ -->
+  <rect x="510" y="20" width="470" height="400" rx="10" fill="#121813" stroke="#1f2a21"/>
+  <text x="530" y="50" class="t">2. Why the near-plane clip is needed</text>
+  <text x="530" y="70" class="s">Edge A→B where A is behind the camera (z &lt; 0).</text>
+
+  <line class="axis" x1="540" y1="230" x2="960" y2="230" marker-end="url(#ax)"/>
+  <text x="942" y="250" class="s">+Z</text>
+
+  <!-- near plane (exaggerated) -->
+  <line x1="640" y1="96" x2="640" y2="360" stroke="#ffb547" stroke-width="2" stroke-dasharray="6 4"/>
+  <text x="646" y="108" class="am">z = 0.1</text>
+  <text x="646" y="124" class="s">near plane (drawn wider)</text>
+
+  <!-- discarded part -->
+  <line x1="560" y1="170" x2="640" y2="198.2" stroke="#556357" stroke-width="3" stroke-dasharray="4 4"/>
+  <!-- kept part -->
+  <line class="seg" x1="640" y1="198.2" x2="900" y2="290"/>
+
+  <circle cx="560" cy="170" r="6" fill="#556357"/>
+  <text x="532" y="160" class="s">A (z &lt; 0)</text>
+  <circle cx="640" cy="198.2" r="6" fill="#ffb547"/>
+  <text x="652" y="192" class="am">A'</text>
+  <circle cx="900" cy="290" r="6" fill="#36f56a"/>
+  <text x="912" y="294" class="m">B</text>
+
+  <circle cx="600" cy="230" r="7" fill="#ffb547"/>
+  <text x="578" y="254" class="s">camera</text>
+
+  <!-- wrong projection -->
+  <path d="M600 230 L660 340" stroke="#ff6b6b" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#rd)" fill="none"/>
+  <text x="668" y="344" class="rm">without clipping: A.x / A.z flips sign,</text>
+  <text x="668" y="360" class="rm">so A lands on the wrong side of the screen</text>
+
+  <text x="530" y="386" class="am">t = (near − A.z) / (B.z − A.z)</text>
+  <text x="530" y="406" class="am">A' = A + (B − A) · t</text>
+  <text x="782" y="386" class="s">clip_near() in main.cpp.</text>
+  <text x="782" y="404" class="s">Both ends behind: drop edge.</text>
+</svg>

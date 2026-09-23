@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stuff3D Pipeline Viewer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Stuff3D <span>pipeline viewer</span></h1>
+  <p>Every number and pixel below comes from <code>stuff3d --trace</code>: the C++ renderer ran a scripted
+     13&nbsp;s session and recorded what it drew each frame.</p>
+</header>
+
+<main>
+  <section class="panel view">
+    <div class="panel-head">
+      <h2>Screen <small>800 &times; 800, what the SFML window shows</small></h2>
+      <div class="toggles">
+        <label><input type="checkbox" id="optDepth" checked> depth shade</label>
+        <label><input type="checkbox" id="optVerts"> vertices</label>
+        <label><input type="checkbox" id="optClip" checked> near-clip cuts</label>
+      </div>
+    </div>
+    <canvas id="screen" width="800" height="800"></canvas>
+    <div class="legend">
+      <span><i class="sw near"></i>close to camera</span>
+      <span><i class="sw far"></i>far away</span>
+      <span><i class="sw clip"></i>edge cut at z = near</span>
+      <span><i class="sw track"></i>tracked vertex (beak tip)</span>
+    </div>
+    <p class="note">The renderer has no depth buffer and no matrices. Each frame it pushes all 324 vertices
+      through five hand-written steps (right), divides by <code>z</code>, and draws the triangle edges as
+      lines. Edges that cross the near plane (<code>z = 0.1</code>) are cut before the divide; without that
+      cut, points behind the camera would flip to the opposite side of the screen. Walk into the penguin
+      around the 7&nbsp;s mark to see it happen.</p>
+  </section>
+
+  <aside class="side">
+    <section class="panel">
+      <h2>Top-down <small>world X / Z plane</small></h2>
+      <canvas id="map" width="360" height="300"></canvas>
+    </section>
+
+    <section class="panel">
+      <h2>One vertex, stage by stage</h2>
+      <ol id="stages" class="stages"></ol>
+    </section>
+  </aside>
+</main>
+
+<footer class="panel transport">
+  <button id="play" aria-label="play or pause">Pause</button>
+  <div class="keys" id="keys">
+    <kbd data-k="q">Q</kbd><kbd data-k="w">W</kbd><kbd data-k="e">E</kbd>
+    <kbd data-k="a">A</kbd><kbd data-k="s">S</kbd><kbd data-k="d">D</kbd>
+  </div>
+  <div class="timeline">
+    <div id="segments" class="segments"></div>
+    <input type="range" id="scrub" min="0" max="0" value="0">
+  </div>
+  <div class="readout"><span id="time">0.00 s</span><select id="speed">
+    <option value="0.25">0.25&times;</option><option value="0.5">0.5&times;</option>
+    <option value="1" selected>1&times;</option><option value="2">2&times;</option></select></div>
+</footer>
+
+<script src="trace.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
